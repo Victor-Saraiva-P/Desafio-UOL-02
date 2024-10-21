@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon dist/server.js"
+    "start:dev": "nodemon dist/server.js",
+    "popularBanco": "node dist/scripts/popularLojasDb.js"
   },
   "author": "Victor Saraiva",
   "license": "ISC",
