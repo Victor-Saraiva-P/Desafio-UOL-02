@@ -4,7 +4,7 @@ import lojaService from '../services/lojaService';
 export const createLoja = async (req: Request, res: Response) => {
   try {
     const lojaData = req.body;
-    const newLoja = await lojaService.createStore(lojaData);
+    const newLoja = await lojaService.createLoja(lojaData);
     await newLoja.save();
     res.status(201).json(newLoja);
   } catch (error) {

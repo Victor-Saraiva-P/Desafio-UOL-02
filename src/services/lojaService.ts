@@ -9,7 +9,7 @@ interface LojaInput {
   cep: string;
 }
 
-export const createStore = async (lojaData: LojaInput) => {
+export const createLoja = async (lojaData: LojaInput) => {
   const { nome, numero, segmento, cep } = lojaData;
 
   // Busca o endereço utilizando o ViaCEP
@@ -35,4 +35,4 @@ export const createStore = async (lojaData: LojaInput) => {
   return newLoja;
 };
 
-export default { createStore };
+export default { createLoja };
