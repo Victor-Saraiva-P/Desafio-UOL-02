@@ -15,4 +15,4 @@ const lojaSchema = new Schema({
   },
 });
 
-export default model('Store', lojaSchema);
+export default model('Loja', lojaSchema);
