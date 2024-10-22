@@ -1,6 +1,8 @@
 import haversine from 'haversine';
-import { Cordenada } from '../types/Cordenada';
-
+interface Cordenada {
+  latitude: number;
+  longitude: number;
+}
 export const formulaHaversine = (start: Cordenada, end: Cordenada) => {
   return haversine(start, end);
 };
