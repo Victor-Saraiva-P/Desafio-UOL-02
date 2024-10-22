@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 // Rotas
-app.use('/api', lojaRoutes);
+app.use('/api/lojas', lojaRoutes);
 
 // Exportar a aplicação configurada
 export default app;

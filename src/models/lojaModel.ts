@@ -3,16 +3,14 @@ import { Schema, model } from 'mongoose';
 const lojaSchema = new Schema({
   nome: { type: String, required: true },
   numero: { type: String, required: true },
-  segmento: { type: String, required: true },
   cep: { type: String, required: true },
+  segmento: String,
   logradouro: String,
   bairro: String,
   cidade: String,
   estado: String,
-  coordenadas: {
-    latitude: Number,
-    longitude: Number,
-  },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
 });
 
 export default model('Loja', lojaSchema);
