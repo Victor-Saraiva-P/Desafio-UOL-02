@@ -1,7 +1,6 @@
 import Loja from '../models/lojaModel';
 import { obterEnderecoViaCep } from '../utils/viaCep';
 import { obterCoordenadasViaCep } from '../utils/geocodingGoogle';
-import { formulaHaversine } from '../utils/haversineFormula';
 
 interface LojaInput {
   nome: string;
@@ -13,24 +12,30 @@ interface LojaInput {
 export const createLoja = async (lojaData: LojaInput) => {
   const { nome, numero, segmento, cep } = lojaData;
 
+  // formata o cep para padronizar
+  const cepFormatado = cep.replace('-', '');
+
   // Busca o endereço utilizando o ViaCEP
   const endereco = await obterEnderecoViaCep(cep);
 
   // Obtém as coordenadas do endereço
   const coordenadas = await obterCoordenadasViaCep(cep);
+  const { latitude, longitude } = coordenadas;
 
-  // Cria a nova loja
+  // Cria a nova loja com o campo de localização
   const newLoja = await Loja.create({
     nome,
     numero,
     segmento,
-    cep,
+    cep: cepFormatado,
     logradouro: endereco.logradouro,
     bairro: endereco.bairro,
     cidade: endereco.cidade,
     estado: endereco.estado,
-    latitude: coordenadas.latitude,
-    longitude: coordenadas.longitude,
+    location: {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    },
   });
 
   return newLoja;
@@ -39,24 +44,41 @@ export const createLoja = async (lojaData: LojaInput) => {
 // encontra lojas próximas num raio de 100km
 export const encontrarLojasNoRaio100 = async (cep: string) => {
   // Obtém as coordenadas do CEP usando a API do Google
-  const coordenadaProcurar = await obterCoordenadasViaCep(cep);
+  const coordenadas = await obterCoordenadasViaCep(cep);
+  const { latitude, longitude } = coordenadas;
 
-  // Busca todas as lojas que possuem coordenadas
-  const lojas = await Loja.find();
-
-  const lojasNoRaio = lojas.filter((loja) => {
-    // Se a loja não tiver coordenadas, não é possível calcular a distância
-    if (loja.latitude === undefined || loja.longitude === undefined)
-      return false;
-
-    const coordenadasLoja = {
-      latitude: loja.latitude,
-      longitude: loja.longitude,
-    };
-
-    const distancia = formulaHaversine(coordenadaProcurar, coordenadasLoja);
-    return distancia <= 100; // Limite de distância em 100 km
-  });
+  // Busca lojas dentro de um raio de 100 km usando agregação e $geoNear
+  const lojasNoRaio = await Loja.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [longitude, latitude],
+        },
+        distanceField: 'distanciaCalculada',
+        maxDistance: 100 * 1000, // 100 km em metros
+        spherical: true,
+      },
+    },
+    {
+      $project: {
+        nome: 1,
+        segmento: 1,
+        numero: 1,
+        logradouro: 1,
+        bairro: 1,
+        cidade: 1,
+        estado: 1,
+        cep: 1,
+        distanciaCalculada: {
+          $round: [{ $divide: ['$distanciaCalculada', 1000] }, 2], // Convertendo para km e arredondando para duas casas decimais
+        },
+      },
+    },
+    {
+      $sort: { distanciaCalculada: 1 },
+    },
+  ]);
 
   return lojasNoRaio;
 };

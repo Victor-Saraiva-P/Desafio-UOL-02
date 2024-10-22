@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "ts watchmode": "tsc -w",
     "start:dev": "nodemon dist/server.js",
     "popularBanco": "node dist/scripts/popularLojasDb.js"
   },
