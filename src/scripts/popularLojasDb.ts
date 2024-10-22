@@ -5,14 +5,12 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: './config.env' });
 
-
 // Pegando variaveis do arquivo .env
-// const mongoDbUri = process.env.DATABASE || '';
-// const mongDbPassword = process.env.DATABASE_PASSWORD || '';
+const mongoDbUri = process.env.DATABASE || '';
+const mongDbPassword = process.env.DATABASE_PASSWORD || '';
 
 // Criando link de conexão com o banco de dados
-const DB =
-  'mongodb+srv://victoralex07062005:fTaNowmO3YvHicwD@lojasdb.zy3lg.mongodb.net/lojasCollection?retryWrites=true&w=majority&appName=LojasDB';
+const DB = mongoDbUri.replace('<db_password>', mongDbPassword) || '';
 
 // Conectando ao banco de dados
 mongoose
