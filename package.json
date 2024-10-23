@@ -7,7 +7,7 @@
     "ts watchmode": "tsc -w",
     "start:dev": "nodemon dist/server.js",
     "popularBanco": "node dist/scripts/popularLojasDb.js",
-    "start:prod": "cross-env ENV=production node dist/server.js"
+    "start:prod": "cross-env ENV=production nodemon dist/server.js"
   },
   "author": "Victor Saraiva",
   "license": "ISC",

@@ -1,4 +1,3 @@
-// middleware/errorHandler.ts
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/appError';
 import dotenv from 'dotenv';
@@ -11,18 +10,16 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-
   // Definir status e mensagem de erro
   const statusCode = err.statusCode || 500;
   const status = err.status || 'error';
-
-  console.log('ERROR name', err.name);
 
   // Desenvolvimento: erro completo
   if (process.env.ENV === 'development') {
     console.error('ERROR 💥', err);
     res.status(statusCode).json({
-      status,
+      status: status,
+      error: err,
       message: err.message,
       stack: err.stack,
     });
@@ -30,8 +27,8 @@ const errorHandler = (
     // Produção: erro operacional
   } else if (process.env.ENV === 'production') {
     if (err.isOperational) {
-      res.status(statusCode).json({
-        status,
+      res.status(err.statusCode).json({
+        status: status,
         message: err.message,
       });
     } else {
