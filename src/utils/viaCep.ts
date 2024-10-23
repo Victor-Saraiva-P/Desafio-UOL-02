@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AppError from '../utils/appError';
 
 // Interface que representa os dados retornados pela API ViaCEP
 interface Endereco {
@@ -16,7 +17,7 @@ export const obterEnderecoViaCep = async (cep: string) => {
     `https://viacep.com.br/ws/${cep}/json/`,
   );
   if (response.data.erro) {
-    throw new Error('CEP não encontrado');
+    throw new AppError('CEP não encontrado', 404);
   }
   const { logradouro, bairro, localidade: cidade, uf: estado } = response.data;
   return {

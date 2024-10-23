@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import AppError from './appError';
 
 dotenv.config({ path: './config.env' });
 
@@ -30,8 +31,9 @@ export const obterCoordenadasViaCep = async (cep: string) => {
     const { lat, lng } = response.data.results[0].geometry.location;
     return { latitude: lat, longitude: lng };
   } else {
-    throw new Error(
+    throw new AppError(
       'Não foi possível obter as coordenadas para o CEP informado.',
+      404,
     );
   }
 };

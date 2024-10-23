@@ -1,6 +1,7 @@
 import Loja from '../models/lojaModel';
 import { obterEnderecoViaCep } from '../utils/viaCep';
 import { obterCoordenadasViaCep } from '../utils/geocodingGoogle';
+import AppError from '../utils/appError';
 
 interface LojaInput {
   nome: string;
@@ -11,6 +12,19 @@ interface LojaInput {
 
 export const createLoja = async (lojaData: LojaInput) => {
   const { nome, numero, segmento, cep } = lojaData;
+
+  // Verifica se os campos obrigatórios foram fornecidos
+  const camposObrigatorios = ['nome', 'numero', 'segmento', 'cep'];
+  const camposFaltando = camposObrigatorios.filter(
+    (campo) => !lojaData[campo as keyof LojaInput],
+  );
+
+  if (camposFaltando.length > 0) {
+    throw new AppError(
+      `Campos obrigatórios não fornecidos: ${camposFaltando.join(', ')}`,
+      400,
+    );
+  }
 
   // formata o cep para padronizar
   const cepFormatado = cep.replace('-', '');
