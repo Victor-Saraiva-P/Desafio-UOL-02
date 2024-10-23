@@ -1,12 +1,13 @@
 {
   "name": "desafiouol",
-  "version": "2.0.0",
+  "version": "2.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "ts watchmode": "tsc -w",
     "start:dev": "nodemon dist/server.js",
-    "popularBanco": "node dist/scripts/popularLojasDb.js"
+    "popularBanco": "node dist/scripts/popularLojasDb.js",
+    "start:prod": "cross-env ENV=production nodemon dist/server.js"
   },
   "author": "Victor Saraiva",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "@types/node": "^22.7.6",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.12.0",
     "globals": "^15.11.0",
     "typescript": "^5.6.3",
