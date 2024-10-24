@@ -7,7 +7,8 @@
     "ts watchmode": "tsc -w",
     "start:dev": "nodemon dist/server.js",
     "popularBanco": "node dist/scripts/popularLojasDb.js",
-    "start:prod": "cross-env ENV=production nodemon dist/server.js"
+    "start:prod": "cross-env ENV=production nodemon dist/server.js",
+    "test": "jest"
   },
   "author": "Victor Saraiva",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "@types/jest": "^29.5.14",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.7.6",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
     "cross-env": "^7.0.3",
