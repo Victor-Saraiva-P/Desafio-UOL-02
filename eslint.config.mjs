@@ -15,4 +15,13 @@ export default [
       ],
     },
   },
+  {
+    files: ['jest.config.js'], // Aplica somente ao arquivo jest.config.js
+    languageOptions: {
+      globals: globals.node, // Define o ambiente Node.js
+    },
+    rules: {
+      'no-undef': 'off', // Desativa a regra `no-undef` para este arquivo específico
+    },
+  },
 ];

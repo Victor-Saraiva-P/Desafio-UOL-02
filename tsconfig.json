@@ -11,7 +11,7 @@
   },
   "include": [
     "src/**/*.ts" // Incluir todos os arquivos TypeScript do diretório src
-  ],
+, "jest.config.js"  ],
   "exclude": [
     "node_modules", // Excluir node_modules para não compilar dependências
     "dist" // Excluir diretório dist

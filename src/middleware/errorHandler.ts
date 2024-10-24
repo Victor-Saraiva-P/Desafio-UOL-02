@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/appError';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: './config.env' });
+import logger from '../utils/logger';
 
 const errorHandler = (
   err: AppError,
@@ -14,9 +12,18 @@ const errorHandler = (
   const statusCode = err.statusCode || 500;
   const status = err.status || 'error';
 
+  // Logar o erro
+  logger.error({
+    message: err.message,
+    status: status,
+    statusCode: statusCode,
+    stack: err.stack,
+    url: req.originalUrl,
+    method: req.method,
+  });
+
   // Desenvolvimento: erro completo
   if (process.env.ENV === 'development') {
-    console.error('ERROR 💥', err);
     res.status(statusCode).json({
       status: status,
       error: err,
@@ -32,7 +39,7 @@ const errorHandler = (
         message: err.message,
       });
     } else {
-      console.error('ERROR 💥', err);
+      // Mensagem genérica para erros não operacionais
       res.status(500).json({
         status: 'error',
         message: 'Algo deu errado!',

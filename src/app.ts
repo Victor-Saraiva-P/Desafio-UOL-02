@@ -2,9 +2,13 @@ import express from 'express';
 import lojaRoutes from './routes/lojaRoutes';
 import errorHandler from './middleware/errorHandler';
 import AppError from './utils/appError';
+import requestLogger from './middleware/requestLogger';
 
 // Inicializar o Express
 const app = express();
+
+// Middleware para log de requisições
+app.use(requestLogger);
 
 // Middleware para analisar o corpo das requisições como JSON
 app.use(express.json());
