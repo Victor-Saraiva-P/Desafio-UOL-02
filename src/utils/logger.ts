@@ -6,9 +6,9 @@ const { combine, timestamp, printf, errors, colorize, json } = format;
 const env = process.env.ENV || 'development';
 
 // Formato de log padrão
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} [${level}]: ${stack || message}`;
-});
+// const logFormat = printf(({ level, message, timestamp, stack }) => {
+//   return `${timestamp} [${level}]: ${stack || message}`;
+// });
 
 // Formato de log para o console
 const consoleLogFormat = combine(
