@@ -16,10 +16,13 @@ export const obterEnderecoViaCep = async (cep: string) => {
   const response = await axios.get<Endereco>(
     `https://viacep.com.br/ws/${cep}/json/`,
   );
+
   if (response.data.erro) {
     throw new AppError('CEP não encontrado', 404);
   }
+
   const { logradouro, bairro, localidade: cidade, uf: estado } = response.data;
+
   return {
     logradouro,
     bairro,
