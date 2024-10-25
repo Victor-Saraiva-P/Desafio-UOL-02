@@ -1,4 +1,7 @@
 import express from 'express';
+import mongoSanitize from 'express-mongo-sanitize';
+// @ts-expect-error: Módulo 'xss-clean' não possui declaração de tipos
+import xss from 'xss-clean';
 import lojaRoutes from './routes/lojaRoutes';
 import errorHandler from './middleware/errorHandler';
 import AppError from './utils/appError';
@@ -12,6 +15,12 @@ app.use(requestLogger);
 
 // Middleware para analisar o corpo das requisições como JSON
 app.use(express.json());
+
+// Middleware para sanitizar dados contra injeção de MongoDB
+app.use(mongoSanitize());
+
+// Middleware para sanitizar contra XSS
+app.use(xss());
 
 // Rotas
 app.use('/api/lojas', lojaRoutes);
