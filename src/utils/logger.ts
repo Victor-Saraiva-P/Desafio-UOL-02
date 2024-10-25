@@ -3,7 +3,7 @@ import { createLogger, format, transports } from 'winston';
 const { combine, timestamp, printf, errors, colorize, json } = format;
 
 // Ambiente de execução da aplicação
-const env = process.env.ENV || 'development';
+const env = process.env.NODE_ENV || 'production';
 
 // Formato de log padrão
 // const logFormat = printf(({ level, message, timestamp, stack }) => {

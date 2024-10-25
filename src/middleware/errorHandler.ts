@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/appError';
 import logger from '../utils/logger';
 
+// Ambiente de execução da aplicação
+const env = process.env.NODE_ENV || 'production';
+
 const errorHandler = (
   err: AppError,
   req: Request,
@@ -23,7 +26,7 @@ const errorHandler = (
   });
 
   // Desenvolvimento: erro completo
-  if (process.env.ENV === 'development') {
+  if (env === 'development') {
     res.status(statusCode).json({
       status: status,
       error: err,
@@ -32,7 +35,7 @@ const errorHandler = (
     });
 
     // Produção: erro operacional
-  } else if (process.env.ENV === 'production') {
+  } else if (env === 'production') {
     if (err.isOperational) {
       res.status(err.statusCode).json({
         status: status,
