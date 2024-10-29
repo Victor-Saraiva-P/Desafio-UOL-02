@@ -37,12 +37,12 @@ describe('Validação de Criação de Loja', () => {
 });
 
 describe('Validação do CEP para busca de lojas próximas', () => {
-  it('Deve lançar um erro se o CEP fornecido for inválido (exemplo: 99999-999)', async () => {
+  it('Deve lançar um erro se o CEP fornecido for inválido (exemplo: 12345-678)', async () => {
     const lojaInvalida: LojaTestInput = {
       nome: 'Loja Teste',
       numero: '123',
       segmento: 'Tecnologia',
-      cep: '99999-999',
+      cep: '12345-678',
     };
 
     await expect(createLoja(lojaInvalida as LojaTestInput)).rejects.toThrow(

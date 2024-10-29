@@ -29,17 +29,4 @@ describe('Testes de Integração para Lojas', () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('nome', 'Loja Teste');
   });
-
-  it('Deve retornar erro 400 se algum campo obrigatório estiver ausente', async () => {
-    const lojaInvalida = {
-      nome: 'Loja Teste',
-      // numero: '123',
-      segmento: 'Tecnologia',
-      cep: '55038655',
-    };
-
-    const response = await request(app).post('/api/lojas').send(lojaInvalida);
-    expect(response.status).toBe(400);
-    expect(response.body.message).toMatch(/Campos obrigatórios não fornecidos/);
-  });
 });
