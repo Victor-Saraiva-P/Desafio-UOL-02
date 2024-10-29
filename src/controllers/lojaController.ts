@@ -26,4 +26,9 @@ export const encontrarLojasNoRaio100 = catchAsync(
   },
 );
 
-export default { createLoja, encontrarLojasNoRaio100 };
+export const getLojas = catchAsync(async (req: Request, res: Response) => {
+  const lojas = await lojaService.getLojas();
+  res.status(200).json(lojas);
+});
+
+export default { createLoja, encontrarLojasNoRaio100, getLojas };

@@ -101,4 +101,9 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
   return lojasNoRaio;
 };
 
-export default { createLoja, encontrarLojasNoRaio100 };
+export const getLojas = async () => {
+  const lojas = await Loja.find().select('-location -__v');
+  return lojas;
+};
+
+export default { createLoja, encontrarLojasNoRaio100, getLojas };
