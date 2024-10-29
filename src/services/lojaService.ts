@@ -1,8 +1,9 @@
 import Loja from '../models/lojaModel';
 import { obterEnderecoViaCep } from '../utils/viaCep';
-import { obterCoordenadasViaCep } from '../utils/geocodingGoogle';
+import { obterCoordenadasPorEndereco } from '../utils/geocodingGoogle';
 import AppError from '../utils/appError';
 import checarCep from '../utils/checaCep';
+import logger from '../utils/logger';
 
 interface LojaInput {
   nome: string;
@@ -34,7 +35,13 @@ export const createLoja = async (lojaData: LojaInput) => {
   const endereco = await obterEnderecoViaCep(cepChecado);
 
   // Obtém as coordenadas do endereço
-  const coordenadas = await obterCoordenadasViaCep(cepChecado);
+  const coordenadas = await obterCoordenadasPorEndereco(
+    endereco.logradouro,
+    endereco.bairro,
+    endereco.cidade,
+    endereco.estado,
+    numero,
+  );
   const { latitude, longitude } = coordenadas;
 
   // Cria a nova loja com o campo de localização
@@ -61,8 +68,23 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
   // Verifica se o CEP é válido
   const cepChecado = checarCep(cep);
 
-  // Obtém as coordenadas do CEP usando a API do Google
-  const coordenadas = await obterCoordenadasViaCep(cepChecado);
+  // obtem endereço do CEP usando a API do ViaCEP
+  const enderecoProcurar = await obterEnderecoViaCep(cepChecado);
+  logger.info(
+    `Endereço encontrado para o CEP ${cepChecado}: ${enderecoProcurar.logradouro}, ${enderecoProcurar.bairro}, ${enderecoProcurar.cidade}, ${enderecoProcurar.estado}`,
+  );
+
+  // Obtém as coordenadas do endereço usando a API do Google
+  const coordenadas = await obterCoordenadasPorEndereco(
+    enderecoProcurar.logradouro,
+    enderecoProcurar.bairro,
+    enderecoProcurar.cidade,
+    enderecoProcurar.estado,
+  );
+
+  logger.info(
+    `Coordenadas encontradas para o endereço: ${coordenadas.latitude}, ${coordenadas.longitude}`,
+  );
   const { latitude, longitude } = coordenadas;
 
   // Busca lojas dentro de um raio de 100 km usando agregação e $geoNear

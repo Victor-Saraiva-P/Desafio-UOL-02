@@ -15,12 +15,19 @@ interface GoogleGeocodeResponse {
   }[];
 }
 
-export const obterCoordenadasViaCep = async (cep: string) => {
+export const obterCoordenadasPorEndereco = async (
+  logradouro: string,
+  bairro: string,
+  cidade: string,
+  estado: string,
+  numero?: string,
+) => {
+  const enderecoCompleto = `${logradouro}, ${numero}, ${bairro}, ${cidade}, ${estado}`;
   const response = await axios.get<GoogleGeocodeResponse>(
     `https://maps.googleapis.com/maps/api/geocode/json`,
     {
       params: {
-        address: cep,
+        address: enderecoCompleto,
         region: 'br',
         key: process.env.GOOGLE_API_KEY,
       },
@@ -32,7 +39,7 @@ export const obterCoordenadasViaCep = async (cep: string) => {
     return { latitude: lat, longitude: lng };
   } else {
     throw new AppError(
-      'Não foi possível obter as coordenadas para o CEP informado.',
+      'Não foi possível obter as coordenadas para o endereço informado.',
       404,
     );
   }
