@@ -21,7 +21,7 @@ export const encontrarLojasNoRaio100 = catchAsync(
     }
     // Se não houver lojas encontradas, retorna 204
     else {
-      res.status(200).json({ message: 'Nenhuma loja encontrada' });
+      res.status(404).json({ message: 'Nenhuma loja encontrada no raio de 100 Km' });
     }
   },
 );
