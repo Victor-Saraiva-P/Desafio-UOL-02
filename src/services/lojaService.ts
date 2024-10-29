@@ -5,11 +5,19 @@ import AppError from '../utils/appError';
 import checarCep from '../utils/checaCep';
 import logger from '../utils/logger';
 
+/**
+ * Interface representando os dados de entrada para criar uma loja.
+ * @interface LojaInput
+ * @property {string} nome - Nome da loja.
+ * @property {string} numero - Número da loja.
+ * @property {string} segmento - Segmento da loja.
+ * @property {string} cep - CEP da loja.
+ */
 interface LojaInput {
   nome: string;
   numero: string;
   segmento: string;
-  cep: string | number;
+  cep: string;
 }
 
 export const createLoja = async (lojaData: LojaInput) => {

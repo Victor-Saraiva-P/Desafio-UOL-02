@@ -7,7 +7,9 @@
     "strict": true, // Habilitar todas as verificações de tipo estritas
     "esModuleInterop": true, // Interoperabilidade com módulos ES
     "forceConsistentCasingInFileNames": true, // Garante que o uso de maiúsculas e minúsculas em arquivos seja consistente
-    "skipLibCheck": true // Pula a verificação de tipos dos arquivos de definição de biblioteca
+    "skipLibCheck": true, // Pula a verificação de tipos dos arquivos de definição de biblioteca
+    "experimentalDecorators": true, // Habilitar decoradores experimentais
+    "emitDecoratorMetadata": true // Emitir metadados de decorador para suporte de injeção de dependência
   },
   "include": [
     "src/**/*.ts" // Incluir todos os arquivos TypeScript do diretório src

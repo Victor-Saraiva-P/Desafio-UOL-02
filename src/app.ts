@@ -1,11 +1,13 @@
-import express from 'express';
-import mongoSanitize from 'express-mongo-sanitize';
 // @ts-expect-error: Módulo 'xss-clean' não possui declaração de tipos
 import xss from 'xss-clean';
+import express from 'express';
+import mongoSanitize from 'express-mongo-sanitize';
 import lojaRoutes from './routes/lojaRoutes';
 import errorHandler from './middleware/errorHandler';
 import AppError from './utils/appError';
 import requestLogger from './middleware/requestLogger';
+import swaggerSpec from './config/swagger';
+import swaggerUi from 'swagger-ui-express';
 
 // Inicializar o Express
 const app = express();
@@ -24,6 +26,9 @@ app.use(xss());
 
 // Rotas
 app.use('/api/lojas', lojaRoutes);
+
+// Rota para a documentação Swagger
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Erro de rota não existente
 app.all('*', (req, res, next) => {
