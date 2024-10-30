@@ -106,6 +106,27 @@ router.get('/', lojaController.getLojas);
 
 /**
  * @swagger
+ * /lojas/{id}:
+ *   delete:
+ *     summary: Deleta uma loja pelo ID
+ *     tags: [Lojas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID da loja
+ *     responses:
+ *       204:
+ *         description: Loja deletada com sucesso
+ *       500:
+ *         description: Erro interno no servidor
+ */
+router.delete('/:id', lojaController.deleteLojaById);
+
+/**
+ * @swagger
  * /lojas/{cep}:
  *   get:
  *     summary: Encontra lojas dentro de um raio de 100 km a partir do CEP fornecido

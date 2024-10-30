@@ -28,5 +28,9 @@ describe('Testes de Integração para Lojas', () => {
     const response = await request(app).post('/api/lojas').send(novaLoja);
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('nome', 'Loja Teste');
+
+    // Guarda o id da loja para deletar
+    const id = response.body._id;
+    await request(app).delete(`/api/lojas/${id}`);
   });
 });

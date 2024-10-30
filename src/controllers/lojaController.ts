@@ -21,7 +21,9 @@ export const encontrarLojasNoRaio100 = catchAsync(
     }
     // Se não houver lojas encontradas, retorna 204
     else {
-      res.status(404).json({ message: 'Nenhuma loja encontrada no raio de 100 Km' });
+      res
+        .status(404)
+        .json({ message: 'Nenhuma loja encontrada no raio de 100 Km' });
     }
   },
 );
@@ -31,4 +33,17 @@ export const getLojas = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(lojas);
 });
 
-export default { createLoja, encontrarLojasNoRaio100, getLojas };
+export const deleteLojaById = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await lojaService.deleteLojaById(id);
+    res.status(204).send();
+  },
+);
+
+export default {
+  createLoja,
+  encontrarLojasNoRaio100,
+  getLojas,
+  deleteLojaById,
+};

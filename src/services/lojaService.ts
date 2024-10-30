@@ -136,4 +136,12 @@ export const getLojas = async () => {
   return lojas;
 };
 
-export default { createLoja, encontrarLojasNoRaio100, getLojas };
+export const deleteLojaById = async (id: string) => {
+  const loja = await Loja.findByIdAndDelete(id);
+  if (!loja) {
+    throw new AppError('Loja não encontrada', 404);
+  }
+  return loja;
+}
+
+export default { createLoja, encontrarLojasNoRaio100, getLojas, deleteLojaById };
