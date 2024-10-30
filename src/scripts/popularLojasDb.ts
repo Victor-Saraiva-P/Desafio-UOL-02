@@ -36,6 +36,7 @@ const populateDatabase = async () => {
     // Inserir novas lojas com dados completos de endereço
     for (const loja of lojas) {
       logger.info(`Criando loja: ${loja.nome}, Endereço: ${loja.cep}`);
+
       await createLoja(loja);
     }
 
