@@ -10,25 +10,7 @@ const router = Router();
  *     description: API para gerenciamento de lojas físicas
  * components:
  *   schemas:
- *     Loja:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: ID da loja
- *         nome:
- *           type: string
- *           description: Nome da loja
- *         numero:
- *           type: string
- *           description: Número da loja
- *         segmento:
- *           type: string
- *           description: Segmento da loja
- *         cep:
- *           type: string
- *           description: CEP da loja
- *     LojaInput:
+ *     LojaCompleta:
  *       type: object
  *       required:
  *         - nome
@@ -48,6 +30,106 @@ const router = Router();
  *         cep:
  *           type: string
  *           description: CEP da loja
+ *         telefone:
+ *           type: string
+ *           description: Telefone de contato da loja
+ *         horarioFuncionamento:
+ *           type: object
+ *           properties:
+ *             segunda:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             terca:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             quarta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             quinta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             sexta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             sabado:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             domingo:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *         location:
+ *           type: object
+ *           properties:
+ *             type:
+ *               type: string
+ *               enum: [Point]
+ *             coordinates:
+ *               type: array
+ *               items:
+ *                 type: number
+ *           example:
+ *             type: Point
+ *             coordinates: [0, 0]
+ * 
+ * 
+ *     LojaSimples:
+ *       type: object
+ *       properties:
+ *         nome:
+ *           type: string
+ *           description: Nome da loja
+ *         numero:
+ *           type: string
+ *           description: Número da loja
+ *         segmento:
+ *           type: string
+ *           description: Segmento da loja
+ *         telefone:
+ *           type: string
+ *           description: Telefone de contato da loja
+ *         cep:
+ *           type: string
+ *           description: CEP da loja
+ *         logradouro:
+ *           type: string
+ *           description: Logradouro da loja
+ *         bairro:
+ *           type: string
+ *           description: Bairro da loja
+ *         cidade:
+ *           type: string
+ *           description: Cidade da loja
+ *         estado:
+ *           type: string
+ *           description: Estado da loja
  */
 
 /**
@@ -61,7 +143,7 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/LojaInput'
+ *             $ref: '#/components/schemas/LojaCompleta'
  *           example:
  *             nome: "Loja Exemplo"
  *             numero: "123"
@@ -96,7 +178,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Loja'
+ *               $ref: '#/components/schemas/LojaCompleta'
  *       400:
  *         description: Requisição inválida
  *       500:
@@ -116,40 +198,7 @@ router.post('/', lojaController.createLoja);
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: ID da loja
- *                   nome:
- *                     type: string
- *                     description: Nome da loja
- *                   numero:
- *                     type: string
- *                     description: Número da loja
- *                   segmento:
- *                     type: string
- *                     description: Segmento da loja
- *                   cep:
- *                     type: string
- *                     description: CEP da loja
- *                   logradouro:
- *                     type: string
- *                     description: Logradouro da loja
- *                   bairro:
- *                     type: string
- *                     description: Bairro da loja
- *                   cidade:
- *                     type: string
- *                     description: Cidade da loja
- *                   estado:
- *                     type: string
- *                     description: Estado da loja
- *                   telefone:
- *                     type: string
- *                     description: Telefone de contato da loja
+ *               $ref: '#/components/schemas/LojaSimples'
  *       500:
  *         description: Erro interno no servidor
  */
@@ -188,47 +237,14 @@ router.delete('/:id', lojaController.deleteLojaById);
  *         required: true
  *         schema:
  *           type: string
- *         description: CEP para buscar lojas próximas num rario de 100 km
+ *         description: CEP para buscar lojas próximas num raio de 100 km
  *     responses:
  *       200:
  *         description: Lista de lojas próximas
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     description: ID da loja
- *                   nome:
- *                     type: string
- *                     description: Nome da loja
- *                   numero:
- *                     type: string
- *                     description: Número da loja
- *                   segmento:
- *                     type: string
- *                     description: Segmento da loja
- *                   cep:
- *                     type: string
- *                     description: CEP da loja
- *                   logradouro:
- *                     type: string
- *                     description: Logradouro da loja
- *                   bairro:
- *                     type: string
- *                     description: Bairro da loja
- *                   cidade:
- *                     type: string
- *                     description: Cidade da loja
- *                   estado:
- *                     type: string
- *                     description: Estado da loja
- *                   telefone:
- *                     type: string
- *                     description: Telefone de contato da loja
+ *               $ref: '#/components/schemas/LojaSimples'
  *       404:
  *         description: Nenhuma loja encontrada no raio de 100 Km
  *       500:
@@ -255,7 +271,7 @@ router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Loja'
+ *               $ref: '#/components/schemas/LojaCompleta'
  *       500:
  *         description: Erro interno no servidor
  */
