@@ -236,4 +236,29 @@ router.delete('/:id', lojaController.deleteLojaById);
  */
 router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
 
+/**
+ * @swagger
+ * /lojas/{id}:
+ *   get:
+ *     summary: Retorna uma loja pelo ID
+ *     tags: [Lojas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID da loja
+ *     responses:
+ *       200:
+ *         description: Loja encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Loja'
+ *       500:
+ *         description: Erro interno no servidor
+ */
+router.get('/:id', lojaController.getLojaById);
+
 export default router;

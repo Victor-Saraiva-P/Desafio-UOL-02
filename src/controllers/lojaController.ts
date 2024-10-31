@@ -41,9 +41,16 @@ export const deleteLojaById = catchAsync(
   },
 );
 
+export const getLojaById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const loja = await lojaService.getLojaById(id);
+  res.status(200).json(loja);
+});
+
 export default {
   createLoja,
   encontrarLojasNoRaio100,
   getLojas,
   deleteLojaById,
+  getLojaById,
 };
