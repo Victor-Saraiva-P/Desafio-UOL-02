@@ -145,7 +145,9 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
 };
 
 export const getLojas = async () => {
-  const lojas = await Loja.find().select('-location -__v -horarioFuncionamento');
+  const lojas = await Loja.find().select(
+    '-location -__v -horarioFuncionamento',
+  );
   return lojas;
 };
 
@@ -157,9 +159,18 @@ export const deleteLojaById = async (id: string) => {
   return loja;
 };
 
+export const getLojaById = async (id: string) => {
+  const loja = await Loja.findById(id).select('-__v');
+  if (!loja) {
+    throw new AppError('Loja não encontrada', 404);
+  }
+  return loja;
+};
+
 export default {
   createLoja,
   encontrarLojasNoRaio100,
   getLojas,
   deleteLojaById,
+  getLojaById,
 };
