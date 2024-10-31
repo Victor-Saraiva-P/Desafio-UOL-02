@@ -2,8 +2,7 @@ import Loja from '../models/lojaModel';
 import { obterEnderecoViaCep } from '../utils/viaCep';
 import { obterCoordenadasPorEndereco } from '../utils/geocodingGoogle';
 import AppError from '../utils/appError';
-import checarCep from '../utils/checaCep';
-import logger from '../utils/logger';
+import { checaId, checarCep } from '../utils/checaDados';
 
 /**
  * Interface representando os dados de entrada para criar uma loja.
@@ -91,9 +90,6 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
 
   // obtem endereço do CEP usando a API do ViaCEP
   const enderecoProcurar = await obterEnderecoViaCep(cepChecado);
-  logger.info(
-    `Endereço encontrado para o CEP ${cepChecado}: ${enderecoProcurar.logradouro}, ${enderecoProcurar.bairro}, ${enderecoProcurar.cidade}, ${enderecoProcurar.estado}`,
-  );
 
   // Obtém as coordenadas do endereço usando a API do Google
   const coordenadas = await obterCoordenadasPorEndereco(
@@ -103,9 +99,6 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
     enderecoProcurar.estado,
   );
 
-  logger.info(
-    `Coordenadas encontradas para o endereço: ${coordenadas.latitude}, ${coordenadas.longitude}`,
-  );
   const { latitude, longitude } = coordenadas;
 
   // Busca lojas dentro de um raio de 100 km usando agregação e $geoNear
@@ -118,13 +111,15 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
         },
         distanceField: 'distanciaCalculada',
         maxDistance: 100 * 1000, // 100 km em metros
-        spherical: true,
+        spherical: true, // Considera a Terra como uma esfera
       },
     },
     {
+      // Organizar os campos
       $project: {
         nome: 1,
         segmento: 1,
+        telefone: 1,
         numero: 1,
         logradouro: 1,
         bairro: 1,
@@ -137,6 +132,7 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
       },
     },
     {
+      // Ordenar por distância
       $sort: { distanciaCalculada: 1 },
     },
   ]);
@@ -152,6 +148,9 @@ export const getLojas = async () => {
 };
 
 export const deleteLojaById = async (id: string) => {
+  // valida o tamanho do id
+  checaId(id);
+
   const loja = await Loja.findByIdAndDelete(id);
   if (!loja) {
     throw new AppError('Loja não encontrada', 404);
@@ -160,6 +159,9 @@ export const deleteLojaById = async (id: string) => {
 };
 
 export const getLojaById = async (id: string) => {
+  // valida o tamanho do id
+  checaId(id);
+
   const loja = await Loja.findById(id).select('-__v');
   if (!loja) {
     throw new AppError('Loja não encontrada', 404);

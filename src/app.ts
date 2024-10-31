@@ -8,6 +8,10 @@ import AppError from './utils/appError';
 import requestLogger from './middleware/requestLogger';
 import swaggerSpec from './config/swagger';
 import swaggerUi from 'swagger-ui-express';
+import dotenv from 'dotenv';
+
+// Configuração do dotenv
+dotenv.config({ path: './config.env' });
 
 // Inicializar o Express
 const app = express();

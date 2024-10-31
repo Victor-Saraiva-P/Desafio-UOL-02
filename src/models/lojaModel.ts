@@ -42,6 +42,7 @@ import { Schema, model } from 'mongoose';
  *           description: Telefone de contato da loja
  *         horarioFuncionamento:
  *           type: object
+ *           description: Horário de funcionamento da loja
  *           properties:
  *             segunda:
  *               type: object
@@ -94,6 +95,7 @@ import { Schema, model } from 'mongoose';
  *                   type: string
  *         location:
  *           type: object
+ *           description: Coordenadas geoespaciais da loja
  *           required:
  *             - type
  *             - coordinates
@@ -129,6 +131,7 @@ const lojaSchema = new Schema({
     sabado: { abre: String, fecha: String },
     domingo: { abre: String, fecha: String },
   },
+  // dados geoespaciais
   location: {
     type: {
       type: String,

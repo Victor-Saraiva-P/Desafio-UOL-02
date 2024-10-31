@@ -10,97 +10,7 @@ const router = Router();
  *     description: API para gerenciamento de lojas físicas
  * components:
  *   schemas:
- *     LojaCompleta:
- *       type: object
- *       required:
- *         - nome
- *         - numero
- *         - segmento
- *         - cep
- *       properties:
- *         nome:
- *           type: string
- *           description: Nome da loja
- *         numero:
- *           type: string
- *           description: Número da loja
- *         segmento:
- *           type: string
- *           description: Segmento da loja
- *         cep:
- *           type: string
- *           description: CEP da loja
- *         telefone:
- *           type: string
- *           description: Telefone de contato da loja
- *         horarioFuncionamento:
- *           type: object
- *           properties:
- *             segunda:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             terca:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             quarta:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             quinta:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             sexta:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             sabado:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *             domingo:
- *               type: object
- *               properties:
- *                 abre:
- *                   type: string
- *                 fecha:
- *                   type: string
- *         location:
- *           type: object
- *           properties:
- *             type:
- *               type: string
- *               enum: [Point]
- *             coordinates:
- *               type: array
- *               items:
- *                 type: number
- *           example:
- *             type: Point
- *             coordinates: [0, 0]
- * 
- * 
- *     LojaSimples:
+ *     lojaSemHorario:
  *       type: object
  *       properties:
  *         nome:
@@ -188,24 +98,6 @@ router.post('/', lojaController.createLoja);
 
 /**
  * @swagger
- * /lojas:
- *   get:
- *     summary: Retorna a lista de todas as lojas
- *     tags: [Lojas]
- *     responses:
- *       200:
- *         description: Lista de lojas
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/LojaSimples'
- *       500:
- *         description: Erro interno no servidor
- */
-router.get('/', lojaController.getLojas);
-
-/**
- * @swagger
  * /lojas/{id}:
  *   delete:
  *     summary: Deleta uma loja pelo ID
@@ -227,30 +119,21 @@ router.delete('/:id', lojaController.deleteLojaById);
 
 /**
  * @swagger
- * /lojas/buscar/{cep}:
+ * /lojas:
  *   get:
- *     summary: Encontra lojas dentro de um raio de 100 km a partir do CEP fornecido
+ *     summary: Retorna a lista de todas as lojas
  *     tags: [Lojas]
- *     parameters:
- *       - in: path
- *         name: cep
- *         required: true
- *         schema:
- *           type: string
- *         description: CEP para buscar lojas próximas num raio de 100 km
  *     responses:
  *       200:
- *         description: Lista de lojas próximas
+ *         description: Lista de lojas
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/LojaSimples'
- *       404:
- *         description: Nenhuma loja encontrada no raio de 100 Km
+ *               $ref: '#/components/schemas/lojaSemHorario'
  *       500:
  *         description: Erro interno no servidor
  */
-router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
+router.get('/', lojaController.getLojas);
 
 /**
  * @swagger
@@ -276,5 +159,32 @@ router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
  *         description: Erro interno no servidor
  */
 router.get('/:id', lojaController.getLojaById);
+
+/**
+ * @swagger
+ * /lojas/buscar/{cep}:
+ *   get:
+ *     summary: Encontra lojas dentro de um raio de 100 km a partir do CEP fornecido
+ *     tags: [Lojas]
+ *     parameters:
+ *       - in: path
+ *         name: cep
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: CEP para buscar lojas próximas num raio de 100 km
+ *     responses:
+ *       200:
+ *         description: Lista de lojas próximas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/lojaSemHorario'
+ *       404:
+ *         description: Nenhuma loja encontrada no raio de 100 Km
+ *       500:
+ *         description: Erro interno no servidor
+ */
+router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
 
 export default router;

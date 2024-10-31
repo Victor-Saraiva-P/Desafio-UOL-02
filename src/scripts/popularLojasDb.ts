@@ -1,11 +1,8 @@
 import mongoose from 'mongoose';
 import Loja from '../models/lojaModel';
 import { createLoja } from '../services/lojaService';
-import dotenv from 'dotenv';
 import lojaData from './lojaData';
 import logger from '../utils/logger';
-
-dotenv.config({ path: './config.env' });
 
 // Pegando variaveis do arquivo .env
 const mongoDbUri = process.env.DATABASE || '';

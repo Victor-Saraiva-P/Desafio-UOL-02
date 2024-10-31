@@ -1,8 +1,5 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import AppError from './appError';
-
-dotenv.config({ path: './config.env' });
 
 interface GoogleGeocodeResponse {
   results: {

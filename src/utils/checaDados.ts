@@ -1,6 +1,6 @@
 import AppError from './appError';
 
-const checarCep = (cep: string | number) => {
+export const checarCep = (cep: string | number) => {
   // verifica se o cep é uma string, senão o converte
   if (typeof cep !== 'string') {
     cep = cep.toString();
@@ -22,4 +22,11 @@ const checarCep = (cep: string | number) => {
   return cepFormatado;
 };
 
-export default checarCep;
+export const checaId = (id: string) => {
+  // verifica se o id tem um tamanho diferente do esperado
+  if (id.length !== 24) {
+    throw new AppError('ID inválido', 400);
+  }
+};
+
+export default { checarCep, checaId };
