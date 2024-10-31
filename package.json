@@ -1,13 +1,13 @@
 {
   "name": "desafiouol",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "ts watchmode": "tsc -w",
     "start:dev": "nodemon dist/server.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon dist/server.js",
     "popularBanco": "node dist/scripts/popularLojasDb.js",
-    "start:prod": "cross-env ENV=production nodemon dist/server.js",
     "test": "jest"
   },
   "author": "Victor Saraiva",
@@ -19,6 +19,8 @@
     "express": "^4.21.1",
     "express-mongo-sanitize": "^2.2.0",
     "mongoose": "^8.7.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.15.0",
     "xss-clean": "^0.1.4"
   },
@@ -30,6 +32,8 @@
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.7.6",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
     "cross-env": "^7.0.3",

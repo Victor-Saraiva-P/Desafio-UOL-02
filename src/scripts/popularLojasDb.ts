@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 import Loja from '../models/lojaModel';
 import { createLoja } from '../services/lojaService';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: './config.env' });
+import lojaData from './lojaData';
+import logger from '../utils/logger';
 
 // Pegando variaveis do arquivo .env
 const mongoDbUri = process.env.DATABASE || '';
@@ -26,38 +25,15 @@ mongoose
 const populateDatabase = async () => {
   try {
     // Dados fictícios de lojas
-    const lojas = [
-      {
-        nome: 'Loja São Paulo',
-        cep: '02675-001',
-        segmento: 'Farmácia',
-        numero: '1',
-      },
-      {
-        nome: 'Loja Rio de Janeiro',
-        cep: '20031001',
-        segmento: 'Mercado',
-        numero: '2',
-      },
-      {
-        nome: 'Loja Curitiba',
-        cep: '80010000',
-        segmento: 'Padaria',
-        numero: '3',
-      },
-      {
-        nome: 'Loja Garanhuns',
-        cep: '55291-010',
-        segmento: 'Restaurante',
-        numero: '4',
-      },
-    ];
+    const lojas = lojaData;
 
     // Remover lojas existentes
     await Loja.deleteMany();
 
     // Inserir novas lojas com dados completos de endereço
     for (const loja of lojas) {
+      logger.info(`Criando loja: ${loja.nome}, Endereço: ${loja.cep}`);
+
       await createLoja(loja);
     }
 

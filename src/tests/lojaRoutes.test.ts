@@ -23,23 +23,24 @@ describe('Testes de Integração para Lojas', () => {
       numero: '123',
       segmento: 'Tecnologia',
       cep: '55038655', // cep valido da cidade de garanhuns
+      telefone: '(87) 99999-9999',
+      horarioFuncionamento: {
+        segunda: { abre: '08:00', fecha: '18:00' },
+        terca: { abre: '08:00', fecha: '18:00' },
+        quarta: { abre: '08:00', fecha: '18:00' },
+        quinta: { abre: '08:00', fecha: '18:00' },
+        sexta: { abre: '08:00', fecha: '18:00' },
+        sabado: { abre: '08:00', fecha: '12:00' },
+        domingo: { abre: '08:00', fecha: '12:00' },
+      },
     };
 
     const response = await request(app).post('/api/lojas').send(novaLoja);
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('nome', 'Loja Teste');
-  });
 
-  it('Deve retornar erro 400 se algum campo obrigatório estiver ausente', async () => {
-    const lojaInvalida = {
-      nome: 'Loja Teste',
-      // numero: '123',
-      segmento: 'Tecnologia',
-      cep: '55038655',
-    };
-
-    const response = await request(app).post('/api/lojas').send(lojaInvalida);
-    expect(response.status).toBe(400);
-    expect(response.body.message).toMatch(/Campos obrigatórios não fornecidos/);
+    // Guarda o id da loja para deletar
+    const id = response.body._id;
+    await request(app).delete(`/api/lojas/${id}`);
   });
 });

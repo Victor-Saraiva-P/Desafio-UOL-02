@@ -1,18 +1,37 @@
 import Loja from '../models/lojaModel';
 import { obterEnderecoViaCep } from '../utils/viaCep';
-import { obterCoordenadasViaCep } from '../utils/geocodingGoogle';
+import { obterCoordenadasPorEndereco } from '../utils/geocodingGoogle';
 import AppError from '../utils/appError';
-import checarCep from '../utils/checaCep';
+import { checaId, checarCep } from '../utils/checaDados';
 
+/**
+ * Interface representando os dados de entrada para criar uma loja.
+ * @interface LojaInput
+ * @property {string} nome - Nome da loja.
+ * @property {string} numero - Número da loja.
+ * @property {string} segmento - Segmento da loja.
+ * @property {string} cep - CEP da loja.
+ */
 interface LojaInput {
   nome: string;
   numero: string;
   segmento: string;
-  cep: string | number;
+  cep: string;
+  telefone?: string;
+  horarioFuncionamento?: {
+    segunda: { abre: string; fecha: string };
+    terca: { abre: string; fecha: string };
+    quarta: { abre: string; fecha: string };
+    quinta: { abre: string; fecha: string };
+    sexta: { abre: string; fecha: string };
+    sabado: { abre: string; fecha: string };
+    domingo: { abre: string; fecha: string };
+  };
 }
 
 export const createLoja = async (lojaData: LojaInput) => {
-  const { nome, numero, segmento, cep } = lojaData;
+  const { nome, numero, segmento, cep, telefone, horarioFuncionamento } =
+    lojaData;
 
   // Verifica se os campos obrigatórios foram fornecidos
   const camposObrigatorios = ['nome', 'numero', 'segmento', 'cep'];
@@ -34,7 +53,13 @@ export const createLoja = async (lojaData: LojaInput) => {
   const endereco = await obterEnderecoViaCep(cepChecado);
 
   // Obtém as coordenadas do endereço
-  const coordenadas = await obterCoordenadasViaCep(cepChecado);
+  const coordenadas = await obterCoordenadasPorEndereco(
+    endereco.logradouro,
+    endereco.bairro,
+    endereco.cidade,
+    endereco.estado,
+    numero,
+  );
   const { latitude, longitude } = coordenadas;
 
   // Cria a nova loja com o campo de localização
@@ -42,11 +67,13 @@ export const createLoja = async (lojaData: LojaInput) => {
     nome,
     numero,
     segmento,
+    telefone,
     cep: cepChecado,
     logradouro: endereco.logradouro,
     bairro: endereco.bairro,
     cidade: endereco.cidade,
     estado: endereco.estado,
+    horarioFuncionamento,
     location: {
       type: 'Point',
       coordinates: [longitude, latitude],
@@ -61,8 +88,17 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
   // Verifica se o CEP é válido
   const cepChecado = checarCep(cep);
 
-  // Obtém as coordenadas do CEP usando a API do Google
-  const coordenadas = await obterCoordenadasViaCep(cepChecado);
+  // obtem endereço do CEP usando a API do ViaCEP
+  const enderecoProcurar = await obterEnderecoViaCep(cepChecado);
+
+  // Obtém as coordenadas do endereço usando a API do Google
+  const coordenadas = await obterCoordenadasPorEndereco(
+    enderecoProcurar.logradouro,
+    enderecoProcurar.bairro,
+    enderecoProcurar.cidade,
+    enderecoProcurar.estado,
+  );
+
   const { latitude, longitude } = coordenadas;
 
   // Busca lojas dentro de um raio de 100 km usando agregação e $geoNear
@@ -75,13 +111,15 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
         },
         distanceField: 'distanciaCalculada',
         maxDistance: 100 * 1000, // 100 km em metros
-        spherical: true,
+        spherical: true, // Considera a Terra como uma esfera
       },
     },
     {
+      // Organizar os campos
       $project: {
         nome: 1,
         segmento: 1,
+        telefone: 1,
         numero: 1,
         logradouro: 1,
         bairro: 1,
@@ -94,6 +132,7 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
       },
     },
     {
+      // Ordenar por distância
       $sort: { distanciaCalculada: 1 },
     },
   ]);
@@ -101,4 +140,39 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
   return lojasNoRaio;
 };
 
-export default { createLoja, encontrarLojasNoRaio100 };
+export const getLojas = async () => {
+  const lojas = await Loja.find().select(
+    '-location -__v -horarioFuncionamento',
+  );
+  return lojas;
+};
+
+export const deleteLojaById = async (id: string) => {
+  // valida o tamanho do id
+  checaId(id);
+
+  const loja = await Loja.findByIdAndDelete(id);
+  if (!loja) {
+    throw new AppError('Loja não encontrada', 404);
+  }
+  return loja;
+};
+
+export const getLojaById = async (id: string) => {
+  // valida o tamanho do id
+  checaId(id);
+
+  const loja = await Loja.findById(id).select('-__v');
+  if (!loja) {
+    throw new AppError('Loja não encontrada', 404);
+  }
+  return loja;
+};
+
+export default {
+  createLoja,
+  encontrarLojasNoRaio100,
+  getLojas,
+  deleteLojaById,
+  getLojaById,
+};
