@@ -178,7 +178,7 @@ router.delete('/:id', lojaController.deleteLojaById);
 
 /**
  * @swagger
- * /lojas/{cep}:
+ * /lojas/buscar/{cep}:
  *   get:
  *     summary: Encontra lojas dentro de um raio de 100 km a partir do CEP fornecido
  *     tags: [Lojas]
@@ -234,6 +234,6 @@ router.delete('/:id', lojaController.deleteLojaById);
  *       500:
  *         description: Erro interno no servidor
  */
-router.get('/:cep', lojaController.encontrarLojasNoRaio100);
+router.get('/buscar/:cep', lojaController.encontrarLojasNoRaio100);
 
 export default router;
