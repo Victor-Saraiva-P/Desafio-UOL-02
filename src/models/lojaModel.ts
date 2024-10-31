@@ -7,43 +7,107 @@ import { Schema, model } from 'mongoose';
  *     Loja:
  *       type: object
  *       required:
- *         - name
- *         - number
- *         - segment
+ *         - nome
+ *         - numero
+ *         - segmento
  *         - cep
+ *         - location
  *       properties:
- *         name:
+ *         nome:
  *           type: string
  *           description: Nome da loja
- *         number:
+ *         numero:
  *           type: string
  *           description: Número da loja
- *         segment:
+ *         segmento:
  *           type: string
  *           description: Segmento da loja
  *         cep:
  *           type: string
  *           description: CEP da loja
- *         address:
+ *         logradouro:
+ *           type: string
+ *           description: Logradouro da loja
+ *         bairro:
+ *           type: string
+ *           description: Bairro da loja
+ *         cidade:
+ *           type: string
+ *           description: Cidade da loja
+ *         estado:
+ *           type: string
+ *           description: Estado da loja
+ *         telefone:
+ *           type: string
+ *           description: Telefone de contato da loja
+ *         horarioFuncionamento:
  *           type: object
  *           properties:
- *             logradouro:
- *               type: string
- *             bairro:
- *               type: string
- *             cidade:
- *               type: string
- *             estado:
- *               type: string
- *             cep:
- *               type: string
- *         coordinates:
+ *             segunda:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             terca:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             quarta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             quinta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             sexta:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             sabado:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *             domingo:
+ *               type: object
+ *               properties:
+ *                 abre:
+ *                   type: string
+ *                 fecha:
+ *                   type: string
+ *         location:
  *           type: object
+ *           required:
+ *             - type
+ *             - coordinates
  *           properties:
- *             latitude:
- *               type: number
- *             longitude:
- *               type: number
+ *             type:
+ *               type: string
+ *               enum:
+ *                 - Point
+ *               description: Tipo de objeto GeoJSON
+ *             coordinates:
+ *               type: array
+ *               items:
+ *                 type: number
+ *               description: Coordenadas [longitude, latitude]
  */
 
 const lojaSchema = new Schema({
@@ -55,6 +119,16 @@ const lojaSchema = new Schema({
   bairro: String,
   cidade: String,
   estado: String,
+  telefone: { type: String },
+  horarioFuncionamento: {
+    segunda: { abre: String, fecha: String },
+    terca: { abre: String, fecha: String },
+    quarta: { abre: String, fecha: String },
+    quinta: { abre: String, fecha: String },
+    sexta: { abre: String, fecha: String },
+    sabado: { abre: String, fecha: String },
+    domingo: { abre: String, fecha: String },
+  },
   location: {
     type: {
       type: String,

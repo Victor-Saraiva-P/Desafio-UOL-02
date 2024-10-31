@@ -28,9 +28,6 @@ const router = Router();
  *         cep:
  *           type: string
  *           description: CEP da loja
- *         endereco:
- *           type: string
- *           description: Endereço completo da loja
  *     LojaInput:
  *       type: object
  *       required:
@@ -66,10 +63,33 @@ const router = Router();
  *           schema:
  *             $ref: '#/components/schemas/LojaInput'
  *           example:
- *             nome: "Loja de tabuleiro"
- *             numero: "1"
- *             segmento: "Jogos de Tabuleiro"
- *             cep: "55299-715"
+ *             nome: "Loja Exemplo"
+ *             numero: "123"
+ *             segmento: "Vestuário"
+ *             cep: "99999-999"
+ *             telefone: "(11) 1234-5678"
+ *             horarioFuncionamento:
+ *               segunda:
+ *                 abre: "08:00"
+ *                 fecha: "18:00"
+ *               terca:
+ *                 abre: "08:00"
+ *                 fecha: "18:00"
+ *               quarta:
+ *                 abre: "08:00"
+ *                 fecha: "18:00"
+ *               quinta:
+ *                 abre: "08:00"
+ *                 fecha: "18:00"
+ *               sexta:
+ *                 abre: "08:00"
+ *                 fecha: "18:00"
+ *               sabado:
+ *                 abre: "10:00"
+ *                 fecha: "16:00"
+ *               domingo:
+ *                 abre: "Fechado"
+ *                 fecha: "Fechado"
  *     responses:
  *       201:
  *         description: Loja criada com sucesso
@@ -98,7 +118,38 @@ router.post('/', lojaController.createLoja);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Loja'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: ID da loja
+ *                   nome:
+ *                     type: string
+ *                     description: Nome da loja
+ *                   numero:
+ *                     type: string
+ *                     description: Número da loja
+ *                   segmento:
+ *                     type: string
+ *                     description: Segmento da loja
+ *                   cep:
+ *                     type: string
+ *                     description: CEP da loja
+ *                   logradouro:
+ *                     type: string
+ *                     description: Logradouro da loja
+ *                   bairro:
+ *                     type: string
+ *                     description: Bairro da loja
+ *                   cidade:
+ *                     type: string
+ *                     description: Cidade da loja
+ *                   estado:
+ *                     type: string
+ *                     description: Estado da loja
+ *                   telefone:
+ *                     type: string
+ *                     description: Telefone de contato da loja
  *       500:
  *         description: Erro interno no servidor
  */
@@ -146,7 +197,38 @@ router.delete('/:id', lojaController.deleteLojaById);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Loja'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: ID da loja
+ *                   nome:
+ *                     type: string
+ *                     description: Nome da loja
+ *                   numero:
+ *                     type: string
+ *                     description: Número da loja
+ *                   segmento:
+ *                     type: string
+ *                     description: Segmento da loja
+ *                   cep:
+ *                     type: string
+ *                     description: CEP da loja
+ *                   logradouro:
+ *                     type: string
+ *                     description: Logradouro da loja
+ *                   bairro:
+ *                     type: string
+ *                     description: Bairro da loja
+ *                   cidade:
+ *                     type: string
+ *                     description: Cidade da loja
+ *                   estado:
+ *                     type: string
+ *                     description: Estado da loja
+ *                   telefone:
+ *                     type: string
+ *                     description: Telefone de contato da loja
  *       404:
  *         description: Nenhuma loja encontrada no raio de 100 Km
  *       500:

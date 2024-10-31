@@ -18,10 +18,21 @@ interface LojaInput {
   numero: string;
   segmento: string;
   cep: string;
+  telefone?: string;
+  horarioFuncionamento?: {
+    segunda: { abre: string; fecha: string };
+    terca: { abre: string; fecha: string };
+    quarta: { abre: string; fecha: string };
+    quinta: { abre: string; fecha: string };
+    sexta: { abre: string; fecha: string };
+    sabado: { abre: string; fecha: string };
+    domingo: { abre: string; fecha: string };
+  };
 }
 
 export const createLoja = async (lojaData: LojaInput) => {
-  const { nome, numero, segmento, cep } = lojaData;
+  const { nome, numero, segmento, cep, telefone, horarioFuncionamento } =
+    lojaData;
 
   // Verifica se os campos obrigatórios foram fornecidos
   const camposObrigatorios = ['nome', 'numero', 'segmento', 'cep'];
@@ -57,11 +68,13 @@ export const createLoja = async (lojaData: LojaInput) => {
     nome,
     numero,
     segmento,
+    telefone,
     cep: cepChecado,
     logradouro: endereco.logradouro,
     bairro: endereco.bairro,
     cidade: endereco.cidade,
     estado: endereco.estado,
+    horarioFuncionamento,
     location: {
       type: 'Point',
       coordinates: [longitude, latitude],
@@ -132,7 +145,7 @@ export const encontrarLojasNoRaio100 = async (cep: string) => {
 };
 
 export const getLojas = async () => {
-  const lojas = await Loja.find().select('-location -__v');
+  const lojas = await Loja.find().select('-location -__v -horarioFuncionamento');
   return lojas;
 };
 
@@ -142,6 +155,11 @@ export const deleteLojaById = async (id: string) => {
     throw new AppError('Loja não encontrada', 404);
   }
   return loja;
-}
+};
 
-export default { createLoja, encontrarLojasNoRaio100, getLojas, deleteLojaById };
+export default {
+  createLoja,
+  encontrarLojasNoRaio100,
+  getLojas,
+  deleteLojaById,
+};
