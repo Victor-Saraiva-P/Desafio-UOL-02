@@ -71,13 +71,17 @@ npm run ts watchmode
 # Execute os testes automatizados
 npm run test
 
+# Popular o banco de dados com lojas predefinidas de jogos de tabuleiro com ceps e localizações do Brasil
+npm run popularBanco
+
 # Modo de Desenvolvimento
 npm run start:dev
 
-# O servidor iniciará na porta definida pela variável de ambiente - acesse http://localhost:(PORT)
-
 # Modo de Produção
 npm run start:prod
+
+# O servidor iniciará na porta definida pela variável de ambiente - acesse http://localhost:(PORT)
+
 ```
 
 ### Diferenças Entre os Modos de Execução
