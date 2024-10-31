@@ -38,7 +38,7 @@ Este projeto faz uso das seguintes APIs externas para enriquecer as funcionalida
 
 A documentação completa da API pode ser acessada através do Swagger. Para visualizar e testar os endpoints disponíveis, acesse:
 
-- **Swagger Documentation:** [http://localhost:(PORT)/api-docs](http://localhost:(PORT)/api-docs) (substitua `(PORT)` pela porta em que o servidor estiver rodando).
+- **Swagger Documentation:** http://localhost:(PORT)/api/docs/#/ (substitua `(PORT)` pela porta em que o servidor estiver rodando).
 
 ---
 
